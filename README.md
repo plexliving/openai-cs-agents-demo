@@ -27,6 +27,20 @@ You can also follow [these instructions](https://platform.openai.com/docs/librar
 
 Alternatively, you can set the `OPENAI_API_KEY` environment variable in an `.env` file at the root of the `python-backend` folder. You will need to install the `python-dotenv` package to load the environment variables from the `.env` file.
 
+### Using different LLM providers
+
+The backend initializes LangChain chat models based on environment variables. By default it uses OpenAI via `ChatOpenAI`.  To switch to providers such as Groq or Google's Gemini you only need to:
+
+1. Install the corresponding LangChain wrapper package (e.g. `groq` or `google-generativeai`).
+2. Set the provider's API key in the environment:
+
+   ```bash
+   export GROQ_API_KEY=your_groq_key        # for ChatGroq
+   export GOOGLE_API_KEY=your_gemini_key    # for ChatGoogleGenerativeAI
+   ```
+
+3. Update the `LangChainAgent` initialization in `python-backend/lc_backend.py` to use `ChatGroq` or `ChatGoogleGenerativeAI` as needed.
+
 ### Install dependencies
 
 Install the dependencies for the backend by running the following commands:
