@@ -51,6 +51,7 @@ class ChatResponse(BaseModel):
     current_agent: str
     messages: List[MessageResponse]
     guardrails: List[GuardrailCheck]
+    context: Dict[str, Any]
 
 
 class ConversationStore:
@@ -111,6 +112,7 @@ async def chat_endpoint(req: ChatRequest):
             current_agent=current_agent.name,
             messages=[MessageResponse(content=refusal, agent=current_agent.name)],
             guardrails=guardrails,
+            context=ctx.model_dump(),
         )
 
     ok2, reason2 = check_jailbreak(req.message)
@@ -133,6 +135,7 @@ async def chat_endpoint(req: ChatRequest):
             current_agent=current_agent.name,
             messages=[MessageResponse(content=refusal, agent=current_agent.name)],
             guardrails=guardrails,
+            context=ctx.model_dump(),
         )
 
     if current_agent is triage_agent:
@@ -150,4 +153,5 @@ async def chat_endpoint(req: ChatRequest):
         current_agent=current_agent.name,
         messages=[MessageResponse(content=response_text, agent=current_agent.name)],
         guardrails=guardrails,
+        context=ctx.model_dump(),
     )
