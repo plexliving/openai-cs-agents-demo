@@ -1,4 +1,4 @@
-openai-agents
+langchain
 pydantic
 fastapi
 uvicorn
