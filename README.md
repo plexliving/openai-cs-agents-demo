@@ -29,17 +29,22 @@ Alternatively, you can set the `OPENAI_API_KEY` environment variable in an `.env
 
 ### Using different LLM providers
 
-The backend initializes LangChain chat models based on environment variables. By default it uses OpenAI via `ChatOpenAI`.  To switch to providers such as Groq or Google's Gemini you only need to:
+The backend initializes LangChain chat models based on environment variables. By
+default it uses OpenAI via `ChatOpenAI`.  If a `GROQ_API_KEY` is provided, the
+backend automatically switches to `ChatGroq` from the `langchain-groq` package.
 
-1. Install the corresponding LangChain wrapper package (e.g. `groq` or `google-generativeai`).
+1. Install the split LangChain packages:
+
+   ```bash
+   pip install langchain-openai langchain-groq langchain-community
+   ```
+
 2. Set the provider's API key in the environment:
 
    ```bash
-   export GROQ_API_KEY=your_groq_key        # for ChatGroq
-   export GOOGLE_API_KEY=your_gemini_key    # for ChatGoogleGenerativeAI
+   export GROQ_API_KEY=your_groq_key        # enables ChatGroq
+   export OPENAI_API_KEY=your_openai_key    # fallback ChatOpenAI
    ```
-
-3. Update the `LangChainAgent` initialization in `python-backend/lc_backend.py` to use `ChatGroq` or `ChatGoogleGenerativeAI` as needed.
 
 ### Install dependencies
 

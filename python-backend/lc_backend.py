@@ -1,10 +1,16 @@
 from __future__ import annotations
 
+import os
 from pydantic import BaseModel
 from typing import Optional
 import random
 
-from langchain.chat_models import ChatOpenAI
+try:
+    from langchain_groq import ChatGroq
+except Exception:  # pragma: no cover - optional dependency
+    ChatGroq = None
+
+from langchain_openai import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage
 
 
@@ -26,7 +32,13 @@ class LangChainAgent:
     def __init__(self, name: str, instructions: str, model: str = "gpt-3.5-turbo") -> None:
         self.name = name
         self.instructions = instructions
-        self.llm = ChatOpenAI(model=model)
+        self.llm = self._create_llm(model)
+
+    def _create_llm(self, model: str):
+        groq_key = os.getenv("GROQ_API_KEY")
+        if groq_key and ChatGroq is not None:
+            return ChatGroq(api_key=groq_key, model_name=model)
+        return ChatOpenAI(model=model)
 
     async def run(self, message: str, context: AirlineAgentContext) -> str:
         resp = await self.llm.ainvoke(
