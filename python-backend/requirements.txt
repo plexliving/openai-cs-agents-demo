@@ -1,4 +1,7 @@
-openai-agents
+langchain
+langchain-openai
+langchain-groq
+langchain-community
 pydantic
 fastapi
 uvicorn
